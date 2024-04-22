@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: 600;
+        }
+        .nav-link {
+            font-weight: 500;
+        }
+        .dropdown-menu {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-item {
+            font-weight: 400;
+        }
+        /*
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
+    <a class="navbar-brand" href="#">Lab & Class Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/Dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="BoookingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Booking
+                </a>
+                <div class="dropdown-menu" aria-labelledby="BookingDropdown">
+                    <a class="dropdown-item" href="#">View All Bookings</a>
+                    <a class="dropdown-item" href="#">Approve Lab Bookings</a>
+                    <a class="dropdown-item" href="#">Manage Lab Availability</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="labsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Labs
+                </a>
+                <div class="dropdown-menu" aria-labelledby="labsDropdown">
+                    <a class="dropdown-item" href="/createLab">Create Labs</a>
+                    <a class="dropdown-item" href="/labs">View all Labs</a>
+                    <a class="dropdown-item" href="/timeslots/add">create a timeslot</a>
+                    <a class="dropdown-item" href="/timeslots/view">View All TimeSlots</a>
+
+                </div>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href="/manage-users">Manage Users</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#">Generate Reports</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Profile">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container mt-5">
+    <h1>Manage Users</h1>
+    <div class="text-right mb-3">
+        <a href="/add-user" class="btn btn-primary">Add User</a>
+    </div>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, userStat : ${users}">
+
+            <th scope="row" th:text="${userStat.index + 1}"></th>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.firstname}"></td>
+            <td th:text="${user.lastname}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.getRole()}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>
