@@ -65,17 +65,19 @@
     </nav>
 
     <div class="container">
-        <h1>All Labs</h1>
+        <h1>All Labs and classes </h1>
 
         <table class="table table-striped table-bordered table-hover">
             <thead class="thead-dark">
             <tr>
+                <th>Lab Name</th>
                 <th>Type</th>
                 <th>Location</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="lab : ${labs}">
+                <td th:text="${lab.labName}"></td>
                 <td th:text="${lab.type}"></td>
                 <td th:text="${lab.location}"></td>
             </tr>

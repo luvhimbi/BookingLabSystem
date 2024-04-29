@@ -31,6 +31,7 @@ public class UserController {
     public String redirectToDashboard(HttpSession session) {
 
         Users currentUser = (Users) session.getAttribute("loggedInUser");
+
         if (currentUser == null) {
             return "redirect:Login";
         }
@@ -48,6 +49,56 @@ public class UserController {
         return "Profile";
     }
 
+
+    //Student related methods
+    @GetMapping("/studentProfile")
+    public String redirectToStudentProfile(HttpSession session,Model model) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+
+        if (!currentUser.getRole().equals(UserRole.STUDENT)) {
+            return "redirect:/access-denied";
+        }
+        model.addAttribute("user", currentUser);
+        return "StudentProfile";
+    }
+    @GetMapping("/AddBooking")
+    public String showAddBooking(HttpSession session, Model model) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+
+        if (!currentUser.getRole().equals(UserRole.STUDENT)) {
+            return "redirect:/access-denied";
+        }
+
+
+        return "StudentBooking";
+    }
+
+    @GetMapping("/StudentDash")
+    public String showStudentDashboard(HttpSession session, Model model) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+
+        if (!currentUser.getRole().equals(UserRole.STUDENT)) {
+            return "redirect:/access-denied";
+        }
+
+        return "StudentDashboard";
+    }
+
     @GetMapping("/add-user")
     public String showAddUserForm(HttpSession session, Model model) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
@@ -56,13 +107,14 @@ public class UserController {
             return "redirect:Login";
         }
 
-        // Check if the current user has the required role to add a new user
+
         if (!currentUser.getRole().equals(UserRole.ADMIN)) {
             return "redirect:/access-denied";
         }
 
         return "add-user";
     }
+
 
 
     @GetMapping("/manage-users")
@@ -149,31 +201,47 @@ public class UserController {
     @PostMapping("/login")
     public String processLogin(@RequestParam("username") String username,
                                @RequestParam("password") String password,
-                               @RequestParam("role") String role,
                                Model model,
                                HttpSession session) {
+
+        // Check if the user is already logged in
+        if (session.getAttribute("loggedInUser") != null) {
+            UserRole userRole = (UserRole) session.getAttribute("userRole");
+            switch (userRole) {
+                case STUDENT:
+                    return "StudentDashboard";
+                case TUTOR:
+                    return "TutorDashboard";
+                case MENTOR:
+                    return "MentorDashboard";
+                case ADMIN:
+                    return "AdminDashboard";
+                default:
+                    // Handle invalid role
+                    return "ErrorPage";
+            }
+        }
+
         Users user = userService.authenticate(username, password);
 
         if (user != null) {
-            // If authentication is successful, store the entire user object in the session
             session.setAttribute("loggedInUser", user);
+            session.setAttribute("userRole", user.getRole());
 
-            // Redirect to the appropriate page based on the user's role
-            switch (role) {
-                case "STUDENT":
+            switch (user.getRole()) {
+                case STUDENT:
                     return "StudentDashboard";
-                case "TUTOR":
+                case TUTOR:
                     return "TutorDashboard";
-                case "MENTOR":
+                case MENTOR:
                     return "MentorDashboard";
-                case "ADMIN":
+                case ADMIN:
                     return "AdminDashboard";
                 default:
-                    model.addAttribute("error", "Invalid role selected");
+                    model.addAttribute("error", "Invalid role");
                     return "Login";
             }
         } else {
-            // If authentication fails, add an error message to the model
             model.addAttribute("error", "Invalid username or password");
             return "Login";
         }

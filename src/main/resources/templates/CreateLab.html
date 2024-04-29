@@ -70,6 +70,12 @@
 
     <form th:action="@{/createLab}" method="post">
       <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" id="name" name="Name" placeholder="Enter Name" required>
+      </div>
+
+
+      <div class="form-group">
         <label for="type">Type</label>
         <select class="form-control" id="type" name="type" required>
           <option value="" disabled selected>Select Type</option>

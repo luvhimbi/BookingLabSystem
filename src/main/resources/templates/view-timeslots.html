@@ -75,7 +75,7 @@
         </thead>
         <tbody>
         <tr th:each="lab : ${labs}">
-            <td th:text="${lab.name}"></td>
+            <td th:text="${lab.getType()}"></td>
             <td th:text="${lab.location}"></td>
             <td>
                 <ul>

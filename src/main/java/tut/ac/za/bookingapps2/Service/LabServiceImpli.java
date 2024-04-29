@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tut.ac.za.bookingapps2.Respository.LabRepository;
 import tut.ac.za.bookingapps2.entities.Lab;
+import tut.ac.za.bookingapps2.entities.LabAvailability;
 import tut.ac.za.bookingapps2.entities.LabType;
 
 import java.util.List;
@@ -14,10 +15,12 @@ public class LabServiceImpli implements LabService {
     private LabRepository labRepository;
 
     @Override
-    public Lab saveLab(LabType type, String location) {
+    public Lab saveLab(String labName,LabType type, String location) {
         Lab lab = new Lab();
+        lab.setLabName(labName);
         lab.setType(type);
         lab.setLocation(location);
+        lab.setAvailability(LabAvailability.AVAILABLE);
         return labRepository.save(lab);
     }
 

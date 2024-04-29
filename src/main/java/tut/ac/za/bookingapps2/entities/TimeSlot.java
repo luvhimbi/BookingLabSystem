@@ -24,7 +24,8 @@ public class TimeSlot {
 
     private LocalTime startTime;
     private LocalTime endTime;
+
     @ManyToOne
-    @JoinColumn(name = "lab_booking_id")
-    private LabBooking labBooking;
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 }

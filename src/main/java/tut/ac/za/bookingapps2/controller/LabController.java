@@ -36,7 +36,7 @@ public class LabController {
 
     }
     @PostMapping("/createLab")
-    public String saveLab(@RequestParam("type") String type, @RequestParam("location") String location, HttpSession session) {
+    public String saveLab(@RequestParam("Name") String name,@RequestParam("type") String type, @RequestParam("location") String location, HttpSession session) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
@@ -48,7 +48,7 @@ public class LabController {
         }
 
         LabType labType = LabType.valueOf(type.toUpperCase());
-        labService.saveLab(labType, location);
+        labService.saveLab(name,labType, location);
 
         return "redirect:/labs";
     }

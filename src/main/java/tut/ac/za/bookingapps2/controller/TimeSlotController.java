@@ -1,5 +1,6 @@
 package tut.ac.za.bookingapps2.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,8 @@ import tut.ac.za.bookingapps2.Service.LabService;
 import tut.ac.za.bookingapps2.Service.TimeSlotService;
 import tut.ac.za.bookingapps2.entities.Lab;
 import tut.ac.za.bookingapps2.entities.TimeSlot;
+import tut.ac.za.bookingapps2.entities.UserRole;
+import tut.ac.za.bookingapps2.entities.Users;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,19 +29,50 @@ public class TimeSlotController {
     }
 
     @GetMapping("/timeslots/add")
-    public String showAddTimeSlotForm(Model model) {
+    public String showAddTimeSlotForm(Model model,HttpSession session) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
+            return "redirect:/access-denied";
+        }
+
         model.addAttribute("timeSlot", new TimeSlot());
         model.addAttribute("labs", labService.getAllLabs());
         return "add-timeslot";
     }
 
     @PostMapping("/timeslots")
-    public String addTimeSlot(TimeSlot timeSlot) {
+    public String addTimeSlot(TimeSlot timeSlot,HttpSession session) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
+            return "redirect:/access-denied";
+        }
+
         timeSlotService.saveTimeSlot(timeSlot);
         return "redirect:/timeslots/add";
     }
     @GetMapping("/timeslots/view")
-    public String viewTimeSlots(Model model) {
+    public String viewTimeSlots(Model model, HttpSession session) {
+
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
+            return "redirect:/access-denied";
+        }
+
         List<Lab> labs = labService.getAllLabs();
         List<Lab> labsWithTimeSlots = labs.stream()
                 .map(lab -> {

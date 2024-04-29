@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import tut.ac.za.bookingapps2.entities.UserRole;
 import tut.ac.za.bookingapps2.entities.Users;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Users, Long> {
@@ -14,4 +15,5 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     @Query("SELECT COUNT(u) FROM Users u WHERE u.role = :role")
     long countByRole(@Param("role") UserRole role);
+
 }
