@@ -75,7 +75,6 @@
                 <div class="dropdown-menu" aria-labelledby="BookingDropdown">
                     <a class="dropdown-item" href="#">View All Bookings</a>
                     <a class="dropdown-item" href="#">Approve Lab Bookings</a>
-                    <a class="dropdown-item" href="#">Manage Lab Availability</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -110,39 +109,6 @@
 </nav>
 
 <h1 class="text-center">Welcome, <span th:text="${session.loggedInUser.username}">Username</span>!</h1>
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-users mr-2"></i> Users</h5>
-                    <ul class="list-unstyled">
-                        <li><strong>Tutors:</strong> <span th:text="${tutorCount}">0</span></li>
-                        <li><strong>Mentors:</strong> <span th:text="${mentorCount}">0</span></li>
-                        <li><strong>Students:</strong> <span th:text="${studentCount}">0</span></li>
-                    </ul>
-                </div>
-            </div>
-
-</div>
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-flask mr-2"></i> Labs</h5>
-                    <p class="card-text"><strong>Total Labs:</strong> <span id="labCount">0</span></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-chalkboard-teacher mr-2"></i> Classes</h5>
-                    <p class="card-text"><strong>Total Classes:</strong> <span id="classCount">0</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>

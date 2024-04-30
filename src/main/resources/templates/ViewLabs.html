@@ -30,7 +30,6 @@
                     <div class="dropdown-menu" aria-labelledby="BookingDropdown">
                         <a class="dropdown-item" href="#">View All Bookings</a>
                         <a class="dropdown-item" href="#">Approve Lab Bookings</a>
-                        <a class="dropdown-item" href="#">Manage Lab Availability</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -64,25 +63,36 @@
         </div>
     </nav>
 
-    <div class="container">
-        <h1>All Labs and classes </h1>
-
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>Lab Name</th>
-                <th>Type</th>
-                <th>Location</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="lab : ${labs}">
-                <td th:text="${lab.labName}"></td>
-                <td th:text="${lab.type}"></td>
-                <td th:text="${lab.location}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">All Labs and Classes</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead >
+                                <tr>
+                                    <th>Lab Name</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="lab : ${labs}">
+                                    <td th:text="${lab.labName}"></td>
+                                    <td th:text="${lab.type}"></td>
+                                    <td th:text="${lab.location}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

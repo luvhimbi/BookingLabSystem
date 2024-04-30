@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Bookings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+<div class="container mt-4">
+    <h1>All Bookings</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>User</th>
+            <th>Lab</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.id}"></td>
+            <td th:text="${booking.user.fullName}"></td>
+            <td th:text="${booking.lab.name}"></td>
+            <td th:text="${#dates.format(booking.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#dates.format(booking.endTime, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${booking.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

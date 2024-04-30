@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Users, Long> {
-    Users findByUsername(String username);
+
     // Method to get the count of mentors
 
     @Query("SELECT COUNT(u) FROM Users u WHERE u.role = :role")
     long countByRole(@Param("role") UserRole role);
+    Users findByUsername(String username);
+    Users findByEmail(String email);
 
 }

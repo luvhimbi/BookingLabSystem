@@ -8,7 +8,8 @@ import java.util.List;
 public interface  UserService {
     public Users authenticate(String username, String password);
     List<Users> getAllUsers();
-
+    public Users findByUsername(String username);
+    public Users findByEmail(String email);
     void saveUser(Users user);
 
 

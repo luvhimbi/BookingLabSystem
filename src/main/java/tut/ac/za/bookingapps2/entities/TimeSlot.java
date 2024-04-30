@@ -1,5 +1,7 @@
 package tut.ac.za.bookingapps2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class TimeSlot {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "lab_id", nullable = false)
     private Lab lab;
 

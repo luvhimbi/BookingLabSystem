@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Booking Confirmation</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <style>
@@ -17,9 +16,31 @@
         .container {
             max-width: 800px;
         }
-        .card {
-            border: none;
+
+        .receipt {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .receipt-header {
+            background-color: #1e88e5;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        .receipt-body {
+            padding: 20px;
+        }
+        .receipt-footer {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 0 0 5px 5px;
+            text-align: center;
+        }
+        .booking-number {
+            color: green;
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -57,52 +78,24 @@
         </div>
     </div>
 </nav>
-
 <div class="container my-5">
-    <div class="card p-4">
-        <h1 class="text-center mb-4">Welcome, <span th:text="${session.loggedInUser.username}">Username</span>!</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Upcoming Lab Bookings</h5>
-                        <p class="card-text">Here you can view your upcoming lab bookings.</p>
-                        <a href="/ViewBooking" class="btn btn-primary">View Bookings</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Book a Lab</h5>
-                        <p class="card-text">Book a lab for your upcoming projects or assignments.</p>
-                        <a href="/AddBooking" class="btn btn-primary">Book a Lab</a>
-                    </div>
-                </div>
-            </div>
+<h1 class="text-center mb-4">Booking Confirmation</h1>
+<div class="receipt">
+    <div class="receipt-header">
+        <h5 class="mb-0">Booking Receipt</h5>
+    </div>
+    <div class="receipt-body">
+        <h6>Booking Details</h6>
+        <p class="mb-1">Lab: <span th:text="${booking.lab.labName}"></span></p>
+        <div th:each="timeSlot, iStat : ${booking.getAvailableTimeSlots()}">
+            <p class="mb-1">Time Slot <span th:text="${iStat.index + 1}"></span>: <span th:text="${#temporals.format(timeSlot.startTime, 'HH:mm')}"></span> - <span th:text="${#temporals.format(timeSlot.endTime, 'HH:mm')}"></span></p>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Profile</h5>
-                        <p class="card-text">View and update your profile information.</p>
-                        <a href="/studentProfile" class="btn btn-primary">View Profile</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Logout</h5>
-                        <p class="card-text">Securely log out from the student portal.</p>
-                        <a href="/logout" class="btn btn-primary">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <p class="mb-1 ">Booking Number: <span class="booking-number" th:text="${booking.bookingNo}"></span></p>
+    </div>
+    <div class="receipt-footer">
+        <p class="mb-0">your booking has being successfully submitted!</p>
     </div>
 </div>
-
+</div>
 </body>
 </html>

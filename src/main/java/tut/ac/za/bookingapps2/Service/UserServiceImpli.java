@@ -13,6 +13,8 @@ public class UserServiceImpli implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EmailService emailService;
 @Override
     public Users authenticate(String username, String password) {
         Users user = userRepository.findByUsername(username);
@@ -28,8 +30,20 @@ public class UserServiceImpli implements UserService {
     }
 
     @Override
+    public Users findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Users findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public void saveUser(Users user) {
+
         userRepository.save(user);
+        emailService.sendUserRegistrationEmail(user);
     }
 
 

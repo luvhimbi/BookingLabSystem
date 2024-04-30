@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Access Denied</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
+  <a class="navbar-brand" href="#">Lab & Class Management</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/Dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="BoookingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Booking
+        </a>
+        <div class="dropdown-menu" aria-labelledby="BookingDropdown">
+          <a class="dropdown-item" href="#">View All Bookings</a>
+          <a class="dropdown-item" href="#">Approve Lab Bookings</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="labsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Labs
+        </a>
+        <div class="dropdown-menu" aria-labelledby="labsDropdown">
+          <a class="dropdown-item" href="/createLab">Create Labs</a>
+          <a class="dropdown-item" href="/labs">View all Labs</a>
+          <a class="dropdown-item" href="/timeslots/add">create a timeslot</a>
+          <a class="dropdown-item" href="/timeslots/view">View All TimeSlots</a>
+        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link" href="/manage-users">Manage Users</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#">Generate Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Profile">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title">Access Denied</h1>
+      <p class="card-text">You do not have permission to access this resource.</p>
+      <a href="/dashboard" class="btn btn-primary">Go to Home</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

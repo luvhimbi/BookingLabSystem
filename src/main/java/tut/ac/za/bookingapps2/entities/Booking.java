@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,22 +18,25 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String bookingNo;
-    private LocalDate bookingDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Date bookingDate;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "booking_timeslot",
+            joinColumns = @JoinColumn(name = "booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "timeslot_id")
+    )
     private List<TimeSlot> availableTimeSlots;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
 
     @ManyToOne
     @JoinColumn(name = "lab_id")
     private Lab lab;
+    private String bookingNo;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    private BookingStatus status=BookingStatus.CONFIRMED;
 }

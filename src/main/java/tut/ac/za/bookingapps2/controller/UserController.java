@@ -66,22 +66,7 @@ public class UserController {
         model.addAttribute("user", currentUser);
         return "StudentProfile";
     }
-    @GetMapping("/AddBooking")
-    public String showAddBooking(HttpSession session, Model model) {
-        Users currentUser = (Users) session.getAttribute("loggedInUser");
 
-        if (currentUser == null) {
-            return "redirect:Login";
-        }
-
-
-        if (!currentUser.getRole().equals(UserRole.STUDENT)) {
-            return "redirect:/access-denied";
-        }
-
-
-        return "StudentBooking";
-    }
 
     @GetMapping("/StudentDash")
     public String showStudentDashboard(HttpSession session, Model model) {
@@ -171,6 +156,20 @@ public class UserController {
 
         if (currentUser == null || !currentUser.getRole().equals(UserRole.ADMIN)) {
             return "redirect:/access-denied";
+        }
+
+        // Check if a user with the same username or email already exists
+        Users existingUserByUsername = userService.findByUsername(username);
+        Users existingUserByEmail = userService.findByEmail(email);
+
+        if (existingUserByUsername != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "A user with the same username already exists.");
+            return "redirect:/add-user";
+        }
+
+        if (existingUserByEmail != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "A user with the same email already exists.");
+            return "redirect:/add-user";
         }
 
         // Create a new Users object
