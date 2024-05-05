@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tut.ac.za.bookingapps2.Service.LabService;
 import tut.ac.za.bookingapps2.entities.Lab;
-import tut.ac.za.bookingapps2.entities.LabType;
 import tut.ac.za.bookingapps2.entities.UserRole;
 import tut.ac.za.bookingapps2.entities.Users;
 
@@ -36,7 +35,7 @@ public class LabController {
 
     }
     @PostMapping("/createLab")
-    public String saveLab(@RequestParam("Name") String name,@RequestParam("type") String type, @RequestParam("location") String location, HttpSession session) {
+    public String saveLab( @RequestParam("location") String location, HttpSession session) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
@@ -47,8 +46,8 @@ public class LabController {
             return "redirect:/access-denied";
         }
 
-        LabType labType = LabType.valueOf(type.toUpperCase());
-        labService.saveLab(name,labType, location);
+
+        labService.saveLab(location);
 
         return "redirect:/labs";
     }

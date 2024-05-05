@@ -50,7 +50,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
     <div class="container">
-        <a class="navbar-brand" href="#">Lab & Class Management -student portal</a>
+        <a class="navbar-brand" href="#">Lab  Management -student portal</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -92,7 +92,7 @@
                             <select class="form-control" id="labSelect" name="labId" required>
                                 <option value="" disabled selected>Select a Lab</option>
                                 <option th:each="lab : ${availableLabs}" th:value="${lab.id}"
-                                        th:text="${lab.labName}"></option>
+                                        th:text="${lab.lab_location}"></option>
                             </select>
                         </div>
                         <div class="form-group">

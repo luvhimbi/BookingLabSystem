@@ -20,13 +20,9 @@ public class Booking {
     private Long id;
 
     private Date bookingDate;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "booking_timeslot",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "timeslot_id")
-    )
-    private List<TimeSlot> availableTimeSlots;
+    @OneToOne(cascade = CascadeType.ALL) // Change to OneToOne
+    @JoinColumn(name = "timeslot_id")
+    private TimeSlot availableTimeSlot;
 
     @ManyToOne
     @JoinColumn(name = "lab_id")

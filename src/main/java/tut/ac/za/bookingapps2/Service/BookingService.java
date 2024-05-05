@@ -10,4 +10,6 @@ public interface BookingService {
     public List<Booking> getUserBookings(Long userId);
 
     List<Booking> getAllBookings();
+    Booking getBookingById(Long id);
+    Booking updateBookingStatus(Booking booking);
 }

@@ -60,5 +60,21 @@ public class UserServiceImpli implements UserService {
         return userRepository.countByRole(UserRole.STUDENT);
     }
 
+    @Override
+    public Users getCurrentUser() {
+        return null;
+    }
+
+    @Override
+    public Users updateUser(Users user) {
+        Users existingUser = userRepository.findById(user.getUser_id()).orElseThrow(() -> new IllegalArgumentException("Invalid user id"));
+        existingUser.setUsername(user.getUsername());
+        existingUser.setFirstname(user.getFirstname());
+        existingUser.setLastname(user.getLastname());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPassword(user.getPassword());
+       return  userRepository.save(existingUser);
+    }
+
 
 }

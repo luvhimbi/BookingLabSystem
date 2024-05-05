@@ -14,7 +14,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
-    <a class="navbar-brand" href="#">Lab & Class Management</a>
+    <a class="navbar-brand" href="#">Lab  Management</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -67,15 +67,14 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Lab Name</th>
+
             <th>Location</th>
             <th>Time Slots</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="lab : ${labs}">
-            <td th:text="${lab.getType()}"></td>
-            <td th:text="${lab.location}"></td>
+            <td th:text="${lab.lab_location}"></td>
             <td>
                 <ul>
                     <li th:each="timeSlot : ${lab.timeSlots}">

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Booking Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -25,12 +25,40 @@
         .dropdown-item {
             font-weight: 400;
         }
-        /*
+        /* Add this CSS code to your existing stylesheet or within the <style> tag */
+
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+            height: 300px;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card-text {
+            color: #666;
+        }
+
+        .list-unstyled {
+            margin-bottom: 0;
+        }
+
+        .list-unstyled li {
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
-    <a class="navbar-brand" href="#">Lab Management</a>
+    <a class="navbar-brand" href="#">Lab  Management</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -46,7 +74,6 @@
                 <div class="dropdown-menu" aria-labelledby="BookingDropdown">
                     <a class="dropdown-item" href="/AllBookings">View All Bookings</a>
                     <a class="dropdown-item" href="#">Approve Lab Bookings</a>
-
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -79,45 +106,38 @@
         </ul>
     </div>
 </nav>
-<div class="container mt-5">
-    <h1>User Details</h1>
-    <form th:object="${user}" method="post" action="/update" class="mt-3">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" th:field="*{username}" class="form-control" id="username">
+
+<div class="container mt-4">
+    <h1>Booking Details</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Booking No: <span th:text="${booking.bookingNo}"></span></h5>
+            <p class="card-text">Booker: <span th:text="${booking.user.firstname + ' ' + booking.user.lastname}"></span></p>
+            <p class="card-text">Booker Role: <span th:text="${booking.user.role}"></span></p>
+            <p class="card-text">Lab: <span th:text="${booking.lab.lab_location}"></span></p>
+            <p class="card-text">Start Time: <span th:text="${#temporals.format(booking.availableTimeSlot.startTime, 'HH:mm')}"></span></p>
+            <p class="card-text">End Time: <span th:text="${#temporals.format(booking.availableTimeSlot.endTime, 'HH:mm')}"></span></p>
+            <p class="card-text">Status: <span th:text="${booking.status}"></span></p>
+
+            <form th:action="@{/booking/update-status}" th:object="${booking}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label for="status">Update Status:</label>
+                    <select class="form-control" id="status" th:field="*{status}">
+                        <option value="PENDING">Pending</option>
+                        <option value="APPROVED">Approved</option>
+                        <option value="REJECTED">Rejected</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" th:field="*{firstname}" class="form-control" id="firstName">
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" th:field="*{lastname}" class="form-control" id="lastName">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" th:field="*{email}" class="form-control" id="email">
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
+    </div>
 </div>
-</div>
 
-<!-- Bootstrap JS and jQuery (if needed) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-PFpnLx/QQbWls5h3+9E44JXx1v5QT1ZzC8k5g20PpFi3uqN3gpvdZ+2P65qzFJ2q" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-</body>
-</html>
-
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

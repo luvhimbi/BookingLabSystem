@@ -14,7 +14,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
-        <a class="navbar-brand" href="#">Lab & Class Management</a>
+        <a class="navbar-brand" href="#">Lab  Management</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,7 +28,7 @@
                         Booking
                     </a>
                     <div class="dropdown-menu" aria-labelledby="BookingDropdown">
-                        <a class="dropdown-item" href="#">View All Bookings</a>
+                        <a class="dropdown-item" href="/AllBookings">View All Bookings</a>
                         <a class="dropdown-item" href="#">Approve Lab Bookings</a>
                     </div>
                 </li>
@@ -68,23 +68,20 @@
             <div class="col-lg-12">
                 <div class="card shadow-lg">
                     <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0">All Labs and Classes</h4>
+                        <h4 class="mb-0">All Labs</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover">
                                 <thead >
                                 <tr>
-                                    <th>Lab Name</th>
-                                    <th>Type</th>
+
                                     <th>Location</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="lab : ${labs}">
-                                    <td th:text="${lab.labName}"></td>
-                                    <td th:text="${lab.type}"></td>
-                                    <td th:text="${lab.location}"></td>
+                                    <td th:text="${lab.lab_location}"></td>
                                 </tr>
                                 </tbody>
                             </table>

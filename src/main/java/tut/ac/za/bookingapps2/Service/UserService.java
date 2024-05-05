@@ -16,5 +16,7 @@ public interface  UserService {
     public long getTutorCount();
     public long getMentorCount();
     public long getStudentCount();
+    Users getCurrentUser();
+    Users updateUser(Users user);
 
 }

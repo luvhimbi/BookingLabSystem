@@ -50,7 +50,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
     <div class="container">
-        <a class="navbar-brand" href="#">Lab & Class Management -student portal</a>
+        <a class="navbar-brand" href="#">Lab Management -student portal</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -86,10 +86,10 @@
     </div>
     <div class="receipt-body">
         <h6>Booking Details</h6>
-        <p class="mb-1">Lab: <span th:text="${booking.lab.labName}"></span></p>
-        <div th:each="timeSlot, iStat : ${booking.getAvailableTimeSlots()}">
-            <p class="mb-1">Time Slot <span th:text="${iStat.index + 1}"></span>: <span th:text="${#temporals.format(timeSlot.startTime, 'HH:mm')}"></span> - <span th:text="${#temporals.format(timeSlot.endTime, 'HH:mm')}"></span></p>
-        </div>
+        <p class="mb-1">Lab: <span th:text="${booking.lab.lab_location}"></span></p>
+
+            <div th:each="timeSlot : ${booking.getAvailableTimeSlot()}" th:text="|${#temporals.format(timeSlot.startTime, 'HH:mm')} - ${#temporals.format(timeSlot.endTime, 'HH:mm')}|"></div>
+
         <p class="mb-1 ">Booking Number: <span class="booking-number" th:text="${booking.bookingNo}"></span></p>
     </div>
     <div class="receipt-footer">

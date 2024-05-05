@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface LabService {
-    public Lab saveLab(String labName,LabType type, String location);
+    public Lab saveLab(String location);
 
     List<Lab> getAllLabs();
     public List<TimeSlot> getAvailableTimeSlotsForLab(Long labId);

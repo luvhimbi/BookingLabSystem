@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Student Dashboard</title>
@@ -45,10 +45,46 @@
     </div>
 </nav>
 
-<div class="container mt-4">
-    <h2 class="text-center">Welcome,  <span th:text="${session.loggedInUser.username}">Username</span></h2>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <span th:text="${error}"></span>
+            </div>
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">My Bookings</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Booking No</th>
+                                <th>Lab Location</th>
+                                <th>Time Slot(s)</th>
+                                <th>Booking Date</th>
+                                <th>Booking Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="booking : ${userBookings}">
+                                <td th:text="${booking.bookingNo}"></td>
+                                <td th:text="${booking.lab.lab_location}"></td>
+                                <td>
+                                    <div th:each="timeSlot : ${booking.getAvailableTimeSlot()}" th:text="|${#temporals.format(timeSlot.startTime, 'HH:mm')} - ${#temporals.format(timeSlot.endTime, 'HH:mm')}|"></div>
+                                </td>
+                                <td th:text="${#dates.format(booking.bookingDate, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${booking.status}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

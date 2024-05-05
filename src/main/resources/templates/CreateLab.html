@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <title>Create Lab</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -16,7 +16,7 @@
 
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
-    <a class="navbar-brand" href="#">Lab & Class Management</a>
+    <a class="navbar-brand" href="#">Lab Management</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -30,7 +30,7 @@
             Booking
           </a>
           <div class="dropdown-menu" aria-labelledby="BookingDropdown">
-            <a class="dropdown-item" href="#">View All Bookings</a>
+            <a class="dropdown-item" href="/AllBookings">View All Bookings</a>
             <a class="dropdown-item" href="#">Approve Lab Bookings</a>
           </div>
         </li>
@@ -68,20 +68,7 @@
   <h2>Create Lab</h2>
 
     <form th:action="@{/createLab}" method="post">
-      <div class="form-group">
-        <label for="Name">Name</label>
-        <input type="text" class="form-control" id="name" name="Name" placeholder="Enter Name" required>
-      </div>
 
-
-      <div class="form-group">
-        <label for="type">Type</label>
-        <select class="form-control" id="type" name="type" required>
-          <option value="" disabled selected>Select Type</option>
-          <option value="LAB">Lab</option>
-          <option value="CLASS">Class</option>
-        </select>
-      </div>
       <div class="form-group">
         <label for="location">Location</label>
         <input type="text" class="form-control" id="location" name="location" placeholder="Enter location" required>

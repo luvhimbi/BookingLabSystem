@@ -1,11 +1,12 @@
 package tut.ac.za.bookingapps2.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,6 +39,28 @@ public class UserController {
 
         return "AdminDashboard";
     }
+    @GetMapping("/MentorDashboard")
+    public String redirectToMentorDashboard(HttpSession session) {
+
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+        return "MentorDashboard";
+    }
+    @GetMapping("/TutorDashboard")
+    public String redirectToTutorDashboard(HttpSession session) {
+
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
+
+        return "TutorDashboard";
+    }
     @GetMapping("/Profile")
     public String redirectToProfile(HttpSession session,Model model) {
 
@@ -66,8 +89,29 @@ public class UserController {
         model.addAttribute("user", currentUser);
         return "StudentProfile";
     }
+    @GetMapping("/access-denied")
+    public String showAccessDeniedPage(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // Invalidate the current session
+        }
+        return "access-denied";
+    }
+    @GetMapping("/tutorProfile")
+    public String redirectToTutorProfile(HttpSession session,Model model) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:Login";
+        }
 
 
+        if (!currentUser.getRole().equals(UserRole.TUTOR)) {
+            return "redirect:/access-denied";
+        }
+        model.addAttribute("user", currentUser);
+        return "TutorProfile";
+    }
     @GetMapping("/StudentDash")
     public String showStudentDashboard(HttpSession session, Model model) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
@@ -250,6 +294,35 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
 return "redirect:Login";
+    }
+
+    @PostMapping("/update")
+    public String updateUserDetails(Users updatedUser, BindingResult bindingResult,HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            // Handle validation errors
+            return "user-details";
+        }
+
+        // Retrieve the currently logged-in user from the session
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+        if (currentUser == null) {
+            // Handle the case when the user is not logged in
+            return "redirect:/login";
+        }
+
+        // Update the user details
+        currentUser.setUsername(updatedUser.getUsername());
+        currentUser.setFirstname(updatedUser.getFirstname());
+        currentUser.setLastname(updatedUser.getLastname());
+        currentUser.setEmail(updatedUser.getEmail());
+        currentUser.setPassword(updatedUser.getPassword());
+        // Save the updated user details
+        Users updatedCurrentUser = userService.updateUser(currentUser);
+
+        // Update the session with the updated user details
+        session.setAttribute("loggedInUser", updatedCurrentUser);
+
+        return "redirect:/users/edit?success";
     }
 
 }

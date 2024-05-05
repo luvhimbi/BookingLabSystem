@@ -13,9 +13,8 @@ import tut.ac.za.bookingapps2.entities.Users;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
-import java.time.LocalTime;
 import java.util.Date;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -31,25 +30,79 @@ public class EmailService {
 
         StringBuilder body = new StringBuilder();
         body.append("Dear ").append(booking.getUser().getFirstname()).append(" ").append(booking.getUser().getLastname()).append(",\n\n");
-        body.append("Your booking has been submitted . Here are the details:\n\n");
+        body.append("Your booking has been submitted. Here are the details:\n\n");
         body.append("Booking Number: ").append(booking.getBookingNo()).append("\n");
-        body.append("Lab Name: ").append(booking.getLab().getLabName()).append("\n");
-        body.append("Lab Location: ").append(booking.getLab().getLocation()).append("\n");
-        body.append("Booking Date: ").append(formatDate(booking.getBookingDate())).append("\n");
-        body.append("Time Slot(s):\n");
+        body.append("Lab Location: ").append(booking.getLab().getLab_location()).append("\n");
+        body.append("Booking Date: ").append(booking.getBookingDate()).append("\n");
 
-        List<TimeSlot> timeSlots = booking.getAvailableTimeSlots();
-        for (int i = 0; i < timeSlots.size(); i++) {
-            TimeSlot timeSlot = timeSlots.get(i);
-            body.append((i + 1)).append(". ").append(formatTime(timeSlot.getStartTime())).append(" - ").append(formatTime(timeSlot.getEndTime())).append("\n");
+        // Use single time slot instead of list
+        TimeSlot timeSlot = booking.getAvailableTimeSlot();
+        if (timeSlot != null) {
+            body.append("Time Slot: ");
+            body.append(timeSlot.getStartTime()).append(" - ").append(timeSlot.getEndTime()).append("\n");
         }
 
-        body.append("\nYour booking will be reviewed as soon as possible !\n\nRegards,\nTut Lab Booking Team Team");
+        body.append("\nYour booking will be reviewed as soon as possible!\n\nRegards,\nTut Lab Booking Team");
 
         message.setText(body.toString());
 
         mailSender.send(message);
     }
+    public void sendBookingStatusUpdateEmail(Booking booking) {
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(booking.getUser().getEmail());
+            helper.setSubject("Booking Status Update");
+
+            StringBuilder htmlBody = new StringBuilder();
+            htmlBody.append("<!DOCTYPE html>");
+            htmlBody.append("<html>");
+            htmlBody.append("<head>");
+            htmlBody.append("<style>");
+            htmlBody.append("body { font-family: Arial, sans-serif; }");
+            htmlBody.append("h2 { color: #007bff; }");
+            htmlBody.append("ul { list-style-type: none; padding: 0; }");
+            htmlBody.append("li { margin-bottom: 10px; }");
+            htmlBody.append(".label { font-weight: bold; }");
+            htmlBody.append("</style>");
+            htmlBody.append("</head>");
+            htmlBody.append("<body>");
+            htmlBody.append("<h2>Dear ").append(booking.getUser().getFirstname()).append(" ").append(booking.getUser().getLastname()).append(",</h2>");
+            htmlBody.append("<p>Your booking status has been updated:</p>");
+            htmlBody.append("<ul>");
+            htmlBody.append("<li><span class='label'>Booking Number:</span> ").append(booking.getBookingNo()).append("</li>");
+            htmlBody.append("<li><span class='label'>Lab Location:</span> ").append(booking.getLab().getLab_location()).append("</li>");
+            htmlBody.append("<li><span class='label'>Booking Date:</span> ").append(booking.getBookingDate()).append("</li>");
+
+            // Use single time slot instead of list
+            TimeSlot timeSlot = booking.getAvailableTimeSlot();
+            if (timeSlot != null) {
+                htmlBody.append("<li><span class='label'>Time Slot:</span> ");
+                htmlBody.append(timeSlot.getStartTime()).append(" - ").append(timeSlot.getEndTime()).append("</li>");
+            }
+
+            htmlBody.append("<li><span class='label'>Status:</span> ").append(booking.getStatus()).append("</li>");
+            htmlBody.append("</ul>");
+
+            if (booking.getStatus().equals("APPROVED")) {
+                htmlBody.append("<p>Your booking has been approved. You can now proceed with your lab session.</p>");
+            } else if (booking.getStatus().equals("REJECTED")) {
+                htmlBody.append("<p>Unfortunately, your booking has been rejected. Please try booking a different time slot or contact the lab administrator for more information.</p>");
+            }
+
+            htmlBody.append("<p>Regards,<br>Tut Lab Booking Team</p>");
+            htmlBody.append("</body>");
+            htmlBody.append("</html>");
+
+            helper.setText(htmlBody.toString(), true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendUserRegistrationEmail(Users user) {
         MimeMessage message = mailSender.createMimeMessage();
 
@@ -90,14 +143,5 @@ public class EmailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-    }
-    private String formatDate(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(date);
-    }
-
-    private String formatTime(LocalTime time) {
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        return timeFormat.format(time);
     }
 }

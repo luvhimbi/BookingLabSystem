@@ -24,12 +24,12 @@ public class LabServiceImpli implements LabService {
     @Autowired
     private  EmailService emailService;
     private UserRepository userRepository;
+
+
     @Override
-    public Lab saveLab(String labName,LabType type, String location) {
+    public Lab saveLab(String location) {
         Lab lab = new Lab();
-        lab.setLabName(labName);
-        lab.setType(type);
-        lab.setLocation(location);
+        lab.setLab_location(location);
         lab.setAvailability(LabAvailability.AVAILABLE);
         return labRepository.save(lab);
     }
@@ -40,15 +40,20 @@ public class LabServiceImpli implements LabService {
     }
 
     public List<TimeSlot> getAvailableTimeSlotsForLab(Long labId) {
-        Lab lab = labRepository.findById(labId).orElseThrow(() -> new RuntimeException("Lab not found"));
+        Lab lab = labRepository.findById(labId)
+                .orElseThrow(() -> new RuntimeException("Lab not found"));
         List<TimeSlot> allTimeSlots = lab.getTimeSlots();
         List<Booking> bookingsForLab = bookingRepository.findByLabId(labId);
 
-        // Filter out the booked time slots
-        List<TimeSlot> bookedTimeSlots = bookingsForLab.stream()
-                .flatMap(booking -> booking.getAvailableTimeSlots().stream())
-                .collect(Collectors.toList());
+        // Extract booked time slots
+        List<TimeSlot> bookedTimeSlots = new ArrayList<>();
+        for (Booking booking : bookingsForLab) {
+            if (booking.getAvailableTimeSlot() != null) { // Check if booking has a time slot
+                bookedTimeSlots.add(booking.getAvailableTimeSlot());
+            }
+        }
 
+        // Filter out the booked time slots
         return allTimeSlots.stream()
                 .filter(timeSlot -> !bookedTimeSlots.contains(timeSlot))
                 .collect(Collectors.toList());
@@ -60,9 +65,8 @@ public class LabServiceImpli implements LabService {
 
         Booking booking = new Booking();
         booking.setLab(lab);
-        List<TimeSlot> slots = new ArrayList<>();
-        slots.add(timeSlot);
-        booking.setAvailableTimeSlots(slots);
+        booking.setAvailableTimeSlot(timeSlot);
+        System.out.println(bookingDate);
         booking.setBookingDate(bookingDate);
         booking.setUser(user);
         booking.setBookingNo(generateBookingNumber());

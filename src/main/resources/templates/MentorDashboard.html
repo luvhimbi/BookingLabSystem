@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Student Dashboard</title>
@@ -16,22 +16,22 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
-    <a class="navbar-brand" href="#">Lab & Class Management -Mentor portal</a>
+    <a class="navbar-brand" href="#">Lab  Management -Mentor portal</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">Dashboard</a>
+                <a class="nav-link" href="/MentorDashboard">Dashboard</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Booking
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/bookLab">Book a Lab</a>
-                    <a class="dropdown-item" href="/AllBookings">View Bookings</a>
+                    <a class="dropdown-item" href="/MentorAddBooking">Book a Lab</a>
+                    <a class="dropdown-item" href="/ViewMentorBooking">View Bookings</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -46,8 +46,8 @@
 </nav>
 
 <div class="container mt-4">
-    <h2>Welcome to the Mentor Dashboard</h2>
-    <!-- Add your content here -->
+    <h2 class="text-center">Welcome,  <span th:text="${session.loggedInUser.username}">Username</span></h2>
+
 </div>
 
 </body>

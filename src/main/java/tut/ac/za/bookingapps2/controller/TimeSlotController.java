@@ -31,7 +31,7 @@ public class TimeSlotController {
     @GetMapping("/timeslots/add")
     public String showAddTimeSlotForm(Model model,HttpSession session) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
-
+        String message = (String) session.getAttribute("message");
         if (currentUser == null) {
             return "redirect:Login";
         }
@@ -39,34 +39,47 @@ public class TimeSlotController {
         if (!currentUser.getRole().equals(UserRole.ADMIN)) {
             return "redirect:/access-denied";
         }
-
+        session.removeAttribute("message");
         model.addAttribute("timeSlot", new TimeSlot());
         model.addAttribute("labs", labService.getAllLabs());
+        model.addAttribute("message", message);
         return "add-timeslot";
     }
 
     @PostMapping("/timeslots")
-    public String addTimeSlot(TimeSlot timeSlot,HttpSession session) {
+    public String addTimeSlot(TimeSlot timeSlot, HttpSession session, Model model) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
+        String message;
 
         if (currentUser == null) {
-            return "redirect:Login";
+            return "Login";
         }
 
         if (!currentUser.getRole().equals(UserRole.ADMIN)) {
             return "redirect:/access-denied";
         }
 
-        timeSlotService.saveTimeSlot(timeSlot);
+        try {
+            timeSlotService.saveTimeSlot(timeSlot);
+            message = "Time slot added successfully.";
+        } catch (Exception e) {
+            message = "Error occurred while adding time slot: " + e.getMessage();
+            // You can log the exception for further investigation
+            e.printStackTrace();
+        }
+
+
+        session.setAttribute("message", message);
         return "redirect:/timeslots/add";
     }
+
     @GetMapping("/timeslots/view")
     public String viewTimeSlots(Model model, HttpSession session) {
 
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
-            return "redirect:Login";
+            return "Login";
         }
 
         if (!currentUser.getRole().equals(UserRole.ADMIN)) {

@@ -15,6 +15,9 @@ public class BookingServiceImpli implements BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public List<Lab> getAllLabs() {
         return labRepository.findAll();
@@ -28,4 +31,18 @@ public class BookingServiceImpli implements BookingService {
         return bookingRepository.findAll();
     }
 
+    @Override
+    public Booking getBookingById(Long id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid booking id: " + id));
+    }
+
+    @Override
+    public Booking updateBookingStatus(Booking booking) {
+        Booking existingBooking = bookingRepository.findById(booking.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid booking id: " + booking.getId()));
+        existingBooking.setStatus(booking.getStatus());
+        emailService.sendBookingStatusUpdateEmail(existingBooking);
+        return bookingRepository.save(existingBooking);
+    }
 }
