@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tut.ac.za.bookingapps2.Service.LabService;
 import tut.ac.za.bookingapps2.entities.Lab;
-import tut.ac.za.bookingapps2.entities.UserRole;
 import tut.ac.za.bookingapps2.entities.Users;
 
 import java.util.List;
@@ -27,10 +26,6 @@ public class LabController {
             return "redirect:Login";
         }
 
-        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
-
         return "CreateLab";
 
     }
@@ -41,11 +36,6 @@ public class LabController {
         if (currentUser == null) {
             return "redirect:Login";
         }
-
-        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
-
 
         labService.saveLab(location);
 

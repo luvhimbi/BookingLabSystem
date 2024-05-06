@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 800px;
+        }
+
+        .receipt {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .receipt-header {
+            background-color: #1e88e5;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+        }
+        .receipt-body {
+            padding: 20px;
+        }
+        .receipt-footer {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 0 0 5px 5px;
+            text-align: center;
+        }
+        .booking-number {
+            color: green;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
+    <a class="navbar-brand" href="#">Lab  Management -Mentor portal</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/MentorDashboard">Dashboard</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Booking
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/MentorAddBooking">Book a Lab</a>
+                    <a class="dropdown-item" href="/ViewMentorBooking">View Bookings</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Profile</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Booking Submission</h1>
+    <div class="receipt">
+        <div class="receipt-header">
+            <h5 class="mb-0">Booking Receipt</h5>
+        </div>
+        <div class="receipt-body">
+            <h6>Booking Details</h6>
+            <p class="mb-1">Lab: <span th:text="${booking.lab.lab_location}"></span></p>
+
+            <div th:each="timeSlot : ${booking.getAvailableTimeSlot()}" th:text="|${#temporals.format(timeSlot.startTime, 'HH:mm')} - ${#temporals.format(timeSlot.endTime, 'HH:mm')}|"></div>
+
+            <p class="mb-1 ">Booking Number: <span class="booking-number" th:text="${booking.bookingNo}"></span></p>
+        </div>
+        <div class="receipt-footer">
+            <p class="mb-0">your booking has being successfully submitted!</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

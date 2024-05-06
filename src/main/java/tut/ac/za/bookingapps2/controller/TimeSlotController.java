@@ -35,10 +35,6 @@ public class TimeSlotController {
         if (currentUser == null) {
             return "redirect:Login";
         }
-
-        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
         session.removeAttribute("message");
         model.addAttribute("timeSlot", new TimeSlot());
         model.addAttribute("labs", labService.getAllLabs());
@@ -54,21 +50,13 @@ public class TimeSlotController {
         if (currentUser == null) {
             return "Login";
         }
-
-        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
-
         try {
             timeSlotService.saveTimeSlot(timeSlot);
             message = "Time slot added successfully.";
         } catch (Exception e) {
             message = "Error occurred while adding time slot: " + e.getMessage();
-            // You can log the exception for further investigation
             e.printStackTrace();
         }
-
-
         session.setAttribute("message", message);
         return "redirect:/timeslots/add";
     }
@@ -76,16 +64,12 @@ public class TimeSlotController {
     @GetMapping("/timeslots/view")
     public String viewTimeSlots(Model model, HttpSession session) {
 
+        //check the current user who is in the session
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
             return "Login";
         }
-
-        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
-
         List<Lab> labs = labService.getAllLabs();
         List<Lab> labsWithTimeSlots = labs.stream()
                 .map(lab -> {

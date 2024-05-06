@@ -106,9 +106,7 @@ public class UserController {
         }
 
 
-        if (!currentUser.getRole().equals(UserRole.TUTOR)) {
-            return "redirect:/access-denied";
-        }
+
         model.addAttribute("user", currentUser);
         return "TutorProfile";
     }
@@ -121,9 +119,6 @@ public class UserController {
         }
 
 
-        if (!currentUser.getRole().equals(UserRole.STUDENT)) {
-            return "redirect:/access-denied";
-        }
 
         return "StudentDashboard";
     }
@@ -135,12 +130,6 @@ public class UserController {
         if (currentUser == null) {
             return "redirect:Login";
         }
-
-
-        if (!currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
-
         return "add-user";
     }
 
@@ -167,27 +156,7 @@ public class UserController {
         return "manage-users";
     }
 
-    @GetMapping("/user-counts")
-    public String getUserCounts(Model model,HttpSession session) {
-        Users currentUser = (Users) session.getAttribute("loggedInUser");
 
-        if (currentUser == null || !currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
-        }
-
-        // Retrieve user counts from the service
-        long studentCount = userService.getStudentCount();
-        System.out.println(studentCount);
-        long tutorCount = userService.getTutorCount();
-        long mentorCount = userService.getMentorCount();
-
-        // Add user counts to the model
-        model.addAttribute("studentCount", studentCount);
-        model.addAttribute("tutorCount", tutorCount);
-        model.addAttribute("mentorCount", mentorCount);
-
-        return "AdminDashboard"; // Or the appropriate view name
-    }
     @PostMapping("/add-user")
     public String addUser(@RequestParam("firstname") String firstname,
                           @RequestParam("lastname") String lastname,
@@ -198,8 +167,8 @@ public class UserController {
                           HttpSession session) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
-        if (currentUser == null || !currentUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/access-denied";
+        if (currentUser == null ) {
+            return "redirect:/Login";
         }
 
         // Check if a user with the same username or email already exists
@@ -306,17 +275,21 @@ return "redirect:Login";
         // Retrieve the currently logged-in user from the session
         Users currentUser = (Users) session.getAttribute("loggedInUser");
         if (currentUser == null) {
+
             // Handle the case when the user is not logged in
             return "redirect:/login";
         }
 
         // Update the user details
+
         currentUser.setUsername(updatedUser.getUsername());
         currentUser.setFirstname(updatedUser.getFirstname());
         currentUser.setLastname(updatedUser.getLastname());
         currentUser.setEmail(updatedUser.getEmail());
         currentUser.setPassword(updatedUser.getPassword());
+
         // Save the updated user details
+
         Users updatedCurrentUser = userService.updateUser(currentUser);
 
         // Update the session with the updated user details

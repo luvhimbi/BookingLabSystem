@@ -61,16 +61,18 @@ public class LabServiceImpli implements LabService {
 
     public Booking createBooking(Long labId, Long timeSlotId, Date bookingDate, Users user) {
         Lab lab = labRepository.findById(labId).orElseThrow(() -> new ResourceNotFoundException("Lab not found"));
+
         TimeSlot timeSlot = timeSlotRepository.findById(timeSlotId).orElseThrow(() -> new ResourceNotFoundException("Time slot not found"));
 
         Booking booking = new Booking();
+      //  booking.getAvailableTimeSlot().setTimeSlotStatus(TimeSlotStatus.NOT_AVAILABLE);
         booking.setLab(lab);
         booking.setAvailableTimeSlot(timeSlot);
         System.out.println(bookingDate);
         booking.setBookingDate(bookingDate);
         booking.setUser(user);
         booking.setBookingNo(generateBookingNumber());
-        emailService.sendBookingConfirmationEmail(booking);
+       // emailService.sendBookingConfirmationEmail(booking);
         return bookingRepository.save(booking);
     }
     private String generateBookingNumber() {

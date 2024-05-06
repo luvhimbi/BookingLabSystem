@@ -20,7 +20,7 @@ public class Booking {
     private Long id;
 
     private Date bookingDate;
-    @OneToOne(cascade = CascadeType.ALL) // Change to OneToOne
+    @OneToOne // Change to OneToOne
     @JoinColumn(name = "timeslot_id")
     private TimeSlot availableTimeSlot;
 
@@ -34,5 +34,5 @@ public class Booking {
 
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status=BookingStatus.CONFIRMED;
+    private BookingStatus status=BookingStatus.SUBMITTED;
 }

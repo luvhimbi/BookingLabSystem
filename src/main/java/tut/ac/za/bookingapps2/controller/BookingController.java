@@ -19,23 +19,19 @@ import java.util.List;
 public class BookingController {
 
     @Autowired
-private LabService labService;
+    private LabService labService;
     private DateUtils dateUtils;
     @Autowired
-private BookingService bookingService;
+    private BookingService bookingService;
+
+
     @GetMapping("/AddBooking")
     public String showAddBooking(HttpSession session, Model model) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
-            return "redirect:Login";
+            return "redirect:/Login";
         }
-
-
-        if (!(currentUser.getRole().equals(UserRole.STUDENT))) {
-            return "redirect:/access-denied";
-        }
-
         List<Lab> availableLabs = labService.getAllLabs();
         model.addAttribute("availableLabs", availableLabs);
         return "AddBooking";
@@ -45,12 +41,7 @@ private BookingService bookingService;
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
-            return "redirect:Login";
-        }
-
-
-        if (!(currentUser.getRole().equals(UserRole.TUTOR))) {
-            return "redirect:/access-denied";
+            return "redirect:/Login";
         }
 
         List<Lab> availableLabs = labService.getAllLabs();
@@ -61,7 +52,9 @@ private BookingService bookingService;
 
     @GetMapping("/getAvailableTimeSlots/{labId}")
     @ResponseBody
-    public List<TimeSlot> getAvailableTimeSlots(@PathVariable Long labId) {
+    public List<TimeSlot> getAvailableTimeSlots(@PathVariable Long labId,HttpSession session) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+
         return labService.getAvailableTimeSlotsForLab(labId);
     }
     @GetMapping("/ViewTutorBooking")
@@ -88,14 +81,12 @@ private BookingService bookingService;
 
         if (loggedInUser != null) {
 
-            List<Booking> userBookings = bookingService.getUserBookings(loggedInUser.getUser_id());
-
-            // Add the user's bookings to the model
-            model.addAttribute("userBookings", userBookings);
-        } else {
-            // Handle the case where the user is not authenticated
-            model.addAttribute("error", "You must be logged in to view your bookings.");
+            return "redirect:/Login";
         }
+
+            List<Booking> userBookings = bookingService.getUserBookings(loggedInUser.getUser_id());
+            model.addAttribute("userBookings", userBookings);
+
 
 
         return "ViewMentorBookings";
@@ -104,39 +95,56 @@ private BookingService bookingService;
     public String viewBookings(Model model,HttpSession session) {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
 
-        if (loggedInUser != null) {
-
-            List<Booking> userBookings = bookingService.getUserBookings(loggedInUser.getUser_id());
-
-            // Add the user's bookings to the model
-            model.addAttribute("userBookings", userBookings);
-        } else {
-            // Handle the case where the user is not authenticated
-            model.addAttribute("error", "You must be logged in to view your bookings.");
+        if (loggedInUser == null) {
+            return "redirect:/Login";
         }
 
+        List<Booking> userBookings = bookingService.getUserBookings(loggedInUser.getUser_id());
+        model.addAttribute("userBookings", userBookings);
 
         return "ViewBookings";
     }
     @PostMapping("/bookLab")
     public String bookLab(@RequestParam Long labId, @RequestParam Long timeSlotId, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date bookingDate, Model model,HttpSession session) {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        if(loggedInUser== null){
+            return "redirect:/Login";
+        }
        Date formattedDate = DateUtils.formatDate(DateUtils.formatDate(bookingDate));
         Booking booking = labService.createBooking(labId, timeSlotId,formattedDate , loggedInUser);
         model.addAttribute("booking", booking);
         return "bookingConfirmation";
+    }
+    @PostMapping("/Tutor_BookLab")
+    public String Tutor_bookLab(@RequestParam Long labId, @RequestParam Long timeSlotId, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date bookingDate, Model model,HttpSession session) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+
+        if(loggedInUser== null){
+            return "redirect:/Login";
+        }
+        Date formattedDate = DateUtils.formatDate(DateUtils.formatDate(bookingDate));
+        Booking booking = labService.createBooking(labId, timeSlotId,formattedDate , loggedInUser);
+        model.addAttribute("booking", booking);
+        return "TutorBookingConfirmation";
+    }
+
+    @PostMapping("/Mentor_BookLab")
+    public String Mentor_bookLab(@RequestParam Long labId, @RequestParam Long timeSlotId, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date bookingDate, Model model,HttpSession session) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        if(loggedInUser== null){
+            return "redirect:/Login";
+        }
+        Date formattedDate = DateUtils.formatDate(DateUtils.formatDate(bookingDate));
+        Booking booking = labService.createBooking(labId, timeSlotId,formattedDate , loggedInUser);
+        model.addAttribute("booking", booking);
+        return "MentorBookingConfirmation";
     }
     @GetMapping("/AllBookings")
     public String getAllBookings(Model model,HttpSession session) {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
-            return "redirect:Login";
-        }
-
-
-        if (!(currentUser.getRole().equals(UserRole.ADMIN))) {
-            return "redirect:/access-denied";
+            return "redirect:/Login";
         }
 
         List<Booking> bookings = bookingService.getAllBookings();
@@ -144,14 +152,22 @@ private BookingService bookingService;
         return "AdminViewBookings";
     }
     @GetMapping("/booking/details/{id}")
-    public String getBookingDetails(@PathVariable Long id, Model model) {
+    public String getBookingDetails(@PathVariable Long id, Model model,HttpSession session) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        if(loggedInUser== null){
+            return "redirect:/Login";
+        }
         Booking booking = bookingService.getBookingById(id);
         model.addAttribute("booking", booking);
         return "Booking_Details";
     }
 
     @PostMapping("/booking/update-status")
-    public String updateBookingStatus(Booking booking) {
+    public String updateBookingStatus(Booking booking,HttpSession session) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        if(loggedInUser== null){
+            return "redirect:/Login";
+        }
         bookingService.updateBookingStatus(booking);
         return "redirect:/AllBookings";
     }
