@@ -23,10 +23,16 @@ public class UserController {
     @Autowired
     private UserService userService;
     @GetMapping("/Login")
-    public String showLoginForm(Model model) {
-
+    public String showLoginForm(Model model, HttpSession session) {
+        String message = (String) session.getAttribute("successMessage");
+        if (message != null) {
+            model.addAttribute("successMessage", message);
+            // Clear the attribute from session to avoid showing it again on subsequent requests
+            session.removeAttribute("successMessage");
+        }
         return "Login";
     }
+
 
     @GetMapping("/Dashboard")
     public String redirectToDashboard(HttpSession session) {
@@ -45,7 +51,7 @@ public class UserController {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
-            return "redirect:Login";
+            return "redirect:/Login";
         }
 
         return "MentorDashboard";
@@ -56,7 +62,7 @@ public class UserController {
         Users currentUser = (Users) session.getAttribute("loggedInUser");
 
         if (currentUser == null) {
-            return "redirect:Login";
+            return "redirect:/Login";
         }
 
         return "TutorDashboard";
@@ -266,7 +272,7 @@ return "redirect:Login";
     }
 
     @PostMapping("/update")
-    public String updateUserDetails(Users updatedUser, BindingResult bindingResult,HttpSession session) {
+    public String updateUserDetails(Users updatedUser, BindingResult bindingResult,Model model,HttpSession session) {
         if (bindingResult.hasErrors()) {
             // Handle validation errors
             return "user-details";
@@ -294,8 +300,8 @@ return "redirect:Login";
 
         // Update the session with the updated user details
         session.setAttribute("loggedInUser", updatedCurrentUser);
-
-        return "redirect:/users/edit?success";
+        session.setAttribute("successMessage", "User details updated successfully.please login again");
+        return "redirect:/Login";
     }
 
 }

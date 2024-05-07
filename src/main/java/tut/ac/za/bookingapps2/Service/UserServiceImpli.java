@@ -17,8 +17,8 @@ public class UserServiceImpli implements UserService {
     private EmailService emailService;
 @Override
     public Users authenticate(String username, String password) {
-        Users user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
+        Users user = userRepository.findByUsername(username.trim());
+        if (user != null && user.getPassword().equals(password.trim())) {
             return user;
         }
         return null;
@@ -47,23 +47,7 @@ public class UserServiceImpli implements UserService {
     }
 
 
-    @Override
-    public long getTutorCount() {
-        return userRepository.countByRole(UserRole.TUTOR);
-    }
-    @Override
-    public long getMentorCount() {
-        return userRepository.countByRole(UserRole.MENTOR);
-    }
-    @Override
-    public long getStudentCount() {
-        return userRepository.countByRole(UserRole.STUDENT);
-    }
 
-    @Override
-    public Users getCurrentUser() {
-        return null;
-    }
 
     @Override
     public Users updateUser(Users user) {
@@ -72,7 +56,6 @@ public class UserServiceImpli implements UserService {
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
         existingUser.setEmail(user.getEmail());
-        existingUser.setPassword(user.getPassword());
        return  userRepository.save(existingUser);
     }
 

@@ -29,7 +29,6 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="BookingDropdown">
                     <a class="dropdown-item" href="/AllBookings">View All Bookings</a>
-                    <a class="dropdown-item" href="#">Approve Lab Bookings</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -49,10 +48,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="/manage-users">Manage Users</a>
             </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">Generate Reports</a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/Profile">Profile</a>
             </li>
@@ -62,30 +57,42 @@
         </ul>
     </div>
 </nav>
-<div class="container">
-    <h1>Time Slots</h1>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-
-            <th>Location</th>
-            <th>Time Slots</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="lab : ${labs}">
-            <td th:text="${lab.lab_location}"></td>
-            <td>
-                <ul>
-                    <li th:each="timeSlot : ${lab.timeSlots}">
-                        <span th:text="${#temporals.format(timeSlot.startTime, 'HH:mm')}"></span> - <span th:text="${#temporals.format(timeSlot.endTime, 'HH:mm')}"></span>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Time Slots</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Time Slots</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="lab : ${labs}">
+                                <td th:text="${lab.lab_location}"></td>
+                                <td>
+                                    <ul>
+                                        <li th:each="timeSlot : ${lab.timeSlots}">
+                                            <span th:text="${#temporals.format(timeSlot.startTime, 'HH:mm')}"></span> - <span th:text="${#temporals.format(timeSlot.endTime, 'HH:mm')}"></span>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

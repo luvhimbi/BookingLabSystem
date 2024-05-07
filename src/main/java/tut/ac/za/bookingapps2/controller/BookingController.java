@@ -75,11 +75,23 @@ public class BookingController {
 
         return "ViewTutorBookings";
     }
+    @GetMapping("/AddMentorBooking")
+    public String showMentorAddBooking(HttpSession session, Model model) {
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:/Login";
+        }
+
+        List<Lab> availableLabs = labService.getAllLabs();
+        model.addAttribute("availableLabs", availableLabs);
+        return "TutorAddBooking";
+    }
     @GetMapping("/ViewMentorBooking")
     public String viewMentorBookings(Model model,HttpSession session) {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
 
-        if (loggedInUser != null) {
+        if (loggedInUser == null) {
 
             return "redirect:/Login";
         }
@@ -168,6 +180,7 @@ public class BookingController {
         if(loggedInUser== null){
             return "redirect:/Login";
         }
+        System.out.println(booking.getStatus());
         bookingService.updateBookingStatus(booking);
         return "redirect:/AllBookings";
     }

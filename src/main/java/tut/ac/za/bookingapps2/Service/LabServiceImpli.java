@@ -42,37 +42,32 @@ public class LabServiceImpli implements LabService {
     public List<TimeSlot> getAvailableTimeSlotsForLab(Long labId) {
         Lab lab = labRepository.findById(labId)
                 .orElseThrow(() -> new RuntimeException("Lab not found"));
+
         List<TimeSlot> allTimeSlots = lab.getTimeSlots();
-        List<Booking> bookingsForLab = bookingRepository.findByLabId(labId);
 
-        // Extract booked time slots
-        List<TimeSlot> bookedTimeSlots = new ArrayList<>();
-        for (Booking booking : bookingsForLab) {
-            if (booking.getAvailableTimeSlot() != null) { // Check if booking has a time slot
-                bookedTimeSlots.add(booking.getAvailableTimeSlot());
-            }
-        }
-
-        // Filter out the booked time slots
+        // Filter out the time slots that are not available
         return allTimeSlots.stream()
-                .filter(timeSlot -> !bookedTimeSlots.contains(timeSlot))
+                .filter(timeSlot -> timeSlot.getTimeSlotStatus() == TimeSlotStatus.AVAILABLE)
                 .collect(Collectors.toList());
     }
+
+
 
     public Booking createBooking(Long labId, Long timeSlotId, Date bookingDate, Users user) {
         Lab lab = labRepository.findById(labId).orElseThrow(() -> new ResourceNotFoundException("Lab not found"));
 
         TimeSlot timeSlot = timeSlotRepository.findById(timeSlotId).orElseThrow(() -> new ResourceNotFoundException("Time slot not found"));
-
         Booking booking = new Booking();
-      //  booking.getAvailableTimeSlot().setTimeSlotStatus(TimeSlotStatus.NOT_AVAILABLE);
         booking.setLab(lab);
-        booking.setAvailableTimeSlot(timeSlot);
+        booking.setStartTime(timeSlot.getStartTime());
+        booking.setEndTime(timeSlot.getEndTime());
+        timeSlot.setTimeSlotStatus(TimeSlotStatus.NOT_AVAILABLE);
         System.out.println(bookingDate);
         booking.setBookingDate(bookingDate);
         booking.setUser(user);
         booking.setBookingNo(generateBookingNumber());
-       // emailService.sendBookingConfirmationEmail(booking);
+        booking.setStatus(BookingStatus.SUBMITTED);
+        emailService.sendBookingConfirmationEmail(booking);
         return bookingRepository.save(booking);
     }
     private String generateBookingNumber() {

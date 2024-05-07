@@ -5,6 +5,7 @@
     <title>Booking Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -55,6 +56,7 @@
             margin-bottom: 0.5rem;
         }
     </style>
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
@@ -73,7 +75,6 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="BookingDropdown">
                     <a class="dropdown-item" href="/AllBookings">View All Bookings</a>
-                    <a class="dropdown-item" href="#">Approve Lab Bookings</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -92,10 +93,6 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="/manage-users">Manage Users</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">Generate Reports</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/Profile">Profile</a>
@@ -116,8 +113,8 @@
             <p class="card-text">Booker: <span th:text="${booking.user.firstname + ' ' + booking.user.lastname}"></span></p>
             <p class="card-text">Booker Role: <span th:text="${booking.user.role}"></span></p>
             <p class="card-text">Lab: <span th:text="${booking.lab.lab_location}"></span></p>
-            <p class="card-text">Start Time: <span th:text="${#temporals.format(booking.availableTimeSlot.startTime, 'HH:mm')}"></span></p>
-            <p class="card-text">End Time: <span th:text="${#temporals.format(booking.availableTimeSlot.endTime, 'HH:mm')}"></span></p>
+            <p class="card-text">Start Time: <span th:text="${#temporals.format(booking.startTime, 'HH:mm')}"></span></p>
+            <p class="card-text">End Time: <span th:text="${#temporals.format(booking.endTime, 'HH:mm')}"></span></p>
             <p class="card-text">Status: <span th:text="${booking.status}"></span></p>
 
             <form th:action="@{/booking/update-status}" th:object="${booking}" method="post">
@@ -125,18 +122,28 @@
                 <div class="form-group">
                     <label for="status">Update Status:</label>
                     <select class="form-control" id="status" th:field="*{status}">
-                        <option value="APPROVED">Approved</option>
-                        <option value="REJECTED">Rejected</option>
+                        <option value="APPROVED" th:selected="${booking.status == 'APPROVED'}">Approved</option>
+                        <option value="REJECTED" th:selected="${booking.status == 'REJECTED'}">Rejected</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Update Status</button>
             </form>
+
         </div>
     </div>
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Disable the select dropdown if the status has been updated
+        $('select#status').change(function() {
+            $(this).prop('disabled', true); // Disable the select dropdown
+        });
+    });
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Mentor Profile</title>
@@ -31,7 +31,7 @@
                     Booking
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/bookLab">Book a Lab</a>
+                    <a class="dropdown-item" href="/AddMentorBooking">Book a Lab</a>
                     <a class="dropdown-item" href="/ViewMentorBooking">View Bookings</a>
                 </div>
             </li>
@@ -64,10 +64,7 @@
             <label for="email">Email</label>
             <input type="email" th:field="*{email}" class="form-control" id="email">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" th:field="*{password}" class="form-control" id="password">
-        </div>
+
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>

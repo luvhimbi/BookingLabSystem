@@ -13,10 +13,6 @@ public interface  UserService {
     void saveUser(Users user);
 
 
-    public long getTutorCount();
-    public long getMentorCount();
-    public long getStudentCount();
-    Users getCurrentUser();
     Users updateUser(Users user);
 
 }

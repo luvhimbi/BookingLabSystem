@@ -28,9 +28,6 @@ public class TimeSlot {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
-    private Booking booking;
     @Enumerated(EnumType.STRING)
     private TimeSlotStatus timeSlotStatus=TimeSlotStatus.AVAILABLE;
 }

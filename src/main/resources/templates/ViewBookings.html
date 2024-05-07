@@ -73,7 +73,8 @@
                             <tr>
                                 <th>Booking No</th>
                                 <th>Lab Location</th>
-                                <th>Time Slot(s)</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
                                 <th>Booking Date</th>
                                 <th>Booking Status</th>
                             </tr>
@@ -82,9 +83,8 @@
                             <tr th:each="booking : ${userBookings}">
                                 <td th:text="${booking.bookingNo}"></td>
                                 <td th:text="${booking.lab.lab_location}"></td>
-                                <td>
-                                    <div th:each="timeSlot : ${booking.getAvailableTimeSlot()}" th:text="|${#temporals.format(timeSlot.startTime, 'HH:mm')} - ${#temporals.format(timeSlot.endTime, 'HH:mm')}|"></div>
-                                </td>
+                                <td th:text="${#temporals.format(booking.startTime, 'HH:mm')}"></td>
+                                <td th:text="${#temporals.format(booking.endTime, 'HH:mm')}"></td>
                                 <td th:text="${#dates.format(booking.bookingDate, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${booking.status}"></td>
                             </tr>
@@ -92,10 +92,10 @@
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>

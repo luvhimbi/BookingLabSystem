@@ -35,12 +35,12 @@ public class EmailService {
         body.append("Lab Location: ").append(booking.getLab().getLab_location()).append("\n");
         body.append("Booking Date: ").append(booking.getBookingDate()).append("\n");
 
-        // Use single time slot instead of list
-        TimeSlot timeSlot = booking.getAvailableTimeSlot();
-        if (timeSlot != null) {
+
+
+
             body.append("Time Slot: ");
-            body.append(timeSlot.getStartTime()).append(" - ").append(timeSlot.getEndTime()).append("\n");
-        }
+            body.append(booking.getStartTime()).append(" - ").append(booking.getEndTime()).append("\n");
+
 
         body.append("\nYour booking will be reviewed as soon as possible!\n\nRegards,\nTut Lab Booking Team");
 
@@ -77,11 +77,10 @@ public class EmailService {
             htmlBody.append("<li><span class='label'>Booking Date:</span> ").append(booking.getBookingDate()).append("</li>");
 
             // Use single time slot instead of list
-            TimeSlot timeSlot = booking.getAvailableTimeSlot();
-            if (timeSlot != null) {
+
                 htmlBody.append("<li><span class='label'>Time Slot:</span> ");
-                htmlBody.append(timeSlot.getStartTime()).append(" - ").append(timeSlot.getEndTime()).append("</li>");
-            }
+                htmlBody.append(booking.getStartTime()).append(" - ").append(booking.getEndTime()).append("</li>");
+
 
             htmlBody.append("<li><span class='label'>Status:</span> ").append(booking.getStatus()).append("</li>");
             htmlBody.append("</ul>");

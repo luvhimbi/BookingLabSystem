@@ -25,7 +25,7 @@
         .dropdown-item {
             font-weight: 400;
         }
-        /*
+
     </style>
 </head>
 <body>
@@ -68,9 +68,6 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Generate Reports</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/Profile">Profile</a>
             </li>
             <li class="nav-item">
@@ -80,6 +77,16 @@
     </div>
 </nav>
 <div class="container mt-5">
+    <!-- Display success message -->
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <!-- Display error message -->
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <h1>User Details</h1>
     <form th:object="${user}" method="post" action="/update" class="mt-3">
         <div class="form-group">

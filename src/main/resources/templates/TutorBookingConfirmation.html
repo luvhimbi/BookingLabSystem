@@ -48,7 +48,7 @@
     </div>
 </nav>
 <div class="container my-5">
-    <h1 class="text-center mb-4">Booking Confirmation</h1>
+    <h1 class="text-center mb-4">Booking Submission</h1>
     <div class="receipt">
         <div class="receipt-header">
             <h5 class="mb-0">Booking Receipt</h5>
@@ -57,14 +57,18 @@
             <h6>Booking Details</h6>
             <p class="mb-1">Lab: <span th:text="${booking.lab.lab_location}"></span></p>
 
-            <div th:each="timeSlot : ${booking.getAvailableTimeSlot()}" th:text="|${#temporals.format(timeSlot.startTime, 'HH:mm')} - ${#temporals.format(timeSlot.endTime, 'HH:mm')}|"></div>
+            <div>
+                <p th:text="|Start Time: ${#temporals.format(booking.startTime, 'HH:mm')}|"></p>
+                <p th:text="|End Time: ${#temporals.format(booking.endTime, 'HH:mm')}|"></p>
+            </div>
 
-            <p class="mb-1 ">Booking Number: <span class="booking-number" th:text="${booking.bookingNo}"></span></p>
+            <p class="mb-1">Booking Number: <span class="booking-number" th:text="${booking.bookingNo}"></span></p>
         </div>
         <div class="receipt-footer">
-            <p class="mb-0">your booking has being successfully submitted!</p>
+            <p class="mb-0">Your booking has been successfully submitted!</p>
         </div>
     </div>
 </div>
+
 </body>
 </html>

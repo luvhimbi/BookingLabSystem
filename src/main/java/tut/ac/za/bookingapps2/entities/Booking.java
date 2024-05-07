@@ -20,10 +20,6 @@ public class Booking {
     private Long id;
 
     private Date bookingDate;
-    @OneToOne // Change to OneToOne
-    @JoinColumn(name = "timeslot_id")
-    private TimeSlot availableTimeSlot;
-
     @ManyToOne
     @JoinColumn(name = "lab_id")
     private Lab lab;
@@ -31,6 +27,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
+    private LocalTime StartTime;
+    private LocalTime EndTime;
 
 
     @Enumerated(EnumType.STRING)
