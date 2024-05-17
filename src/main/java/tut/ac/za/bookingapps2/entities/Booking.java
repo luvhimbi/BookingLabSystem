@@ -32,5 +32,5 @@ public class Booking {
 
 
     @Enumerated(EnumType.STRING)
-    private BookingStatus status=BookingStatus.SUBMITTED;
+    private BookingStatus status;
 }

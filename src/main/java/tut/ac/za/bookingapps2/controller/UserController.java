@@ -153,7 +153,7 @@ public class UserController {
 
         // Filter out the logged-in user
         List<Users> usersExceptLoggedInUser = allUsers.stream()
-                .filter(user -> !user.equals(currentUser.getUsername()))
+                .filter(user -> !user.getUsername().equals(currentUser.getUsername()))
                 .collect(Collectors.toList());
 
         // Add the filtered user list and user roles to the model
@@ -161,6 +161,7 @@ public class UserController {
 
         return "manage-users";
     }
+
 
 
     @PostMapping("/add-user")

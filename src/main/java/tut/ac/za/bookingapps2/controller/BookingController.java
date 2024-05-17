@@ -170,6 +170,7 @@ public class BookingController {
             return "redirect:/Login";
         }
         Booking booking = bookingService.getBookingById(id);
+        System.out.println(booking.getStatus());
         model.addAttribute("booking", booking);
         return "Booking_Details";
     }

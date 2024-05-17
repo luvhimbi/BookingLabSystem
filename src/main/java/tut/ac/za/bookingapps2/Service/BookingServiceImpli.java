@@ -7,7 +7,10 @@ import tut.ac.za.bookingapps2.Respository.LabRepository;
 import tut.ac.za.bookingapps2.Respository.TimeSlotRepository;
 import tut.ac.za.bookingapps2.entities.*;
 
+import java.sql.Time;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class BookingServiceImpli implements BookingService {
     @Autowired
@@ -17,6 +20,7 @@ public class BookingServiceImpli implements BookingService {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
     private TimeSlotRepository timeSlotRepository;
 
     @Override
@@ -40,34 +44,32 @@ public class BookingServiceImpli implements BookingService {
 
     @Override
     public Booking updateBookingStatus(Booking booking) {
+       //status of booking = submitted
         Booking existingBooking = bookingRepository.findById(booking.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid booking id: " + booking.getId()));
+       //exists
+        //
         System.out.println(booking.getStatus());
         existingBooking.setStatus(booking.getStatus());
-        System.out.println(existingBooking.getStatus() );
+        System.out.println(existingBooking.getStatus());
+
         if (existingBooking.getStatus() == BookingStatus.REJECTED) {
-
-
-            TimeSlot rejectedTimeSlot = timeSlotRepository.findByStartTimeAndEndTime(
-                    existingBooking.getStartTime(), existingBooking.getEndTime());
-
-            if (rejectedTimeSlot != null) {
-                // Make the time slot available
-                rejectedTimeSlot.setTimeSlotStatus(TimeSlotStatus.AVAILABLE);
-                // Save the updated time slot
-                timeSlotRepository.save(rejectedTimeSlot);
-            }
-
-            // Send email notification about the booking rejection
-            emailService.sendBookingStatusUpdateEmail(existingBooking);
-
-            return null;
+          long labId =   existingBooking.getLab().getId();
+          List<TimeSlot> timeSlots = timeSlotRepository.findByLabId(labId);
+        // TimeSlot rejectedTimeSlot = timeSlotRepository.findByStartTimeAndEndTime(                 existingBooking.getStartTime(), existingBooking.getEndTime());
+          for (TimeSlot time : timeSlots){
+              if (time.getStartTime().equals(existingBooking.getStartTime())){
+                  // Make the time slot available
+                  time.setTimeSlotStatus(TimeSlotStatus.AVAILABLE);
+                  // Save the updated time slot
+                  timeSlotRepository.save(time);
+                  return null;
+              }
+          }
         }
-
-        // Send email notification about the booking status update (if approved)
         emailService.sendBookingStatusUpdateEmail(existingBooking);
 
-        // Save the updated booking
+      //   Save the updated booking
         return bookingRepository.save(existingBooking);
     }
 
